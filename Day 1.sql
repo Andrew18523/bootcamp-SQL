@@ -323,18 +323,6 @@ alter table customers add constraint unique_email unique (email);
 alter table customers modify name varchar(50) not null;
 -- insert into customers value (9,null, 'mary@gmail.com'); -- error as name is null
 
-create table Department (
-	department_id int Primary Key,
-    department_name VARCHAR(50)
-);
-
-create table Empolyee (
-	employee_id INT Primary key,
-    first_name VARCHAR(50) not null,
-    last_name VARCHAR(50) not null,
-    department_id int,
-    Foreign Key (department_id) references department(department_id)
-)
 
 select name, email from customers;
 
@@ -356,3 +344,27 @@ from customers
 union
 select 1
 from orders;
+
+select * from orders;
+
+-- Select * -> slower performance
+-- View -> selecting the real time data (not the moment when create view, no snapshot)
+create view orders_2023
+as 
+select 1
+from orders
+where trans_date between Date_format('2023-01-01', '%Y-%m-%d') and Date_format('2023-12-31', '%Y-%m-%d') ;
+
+drop view orders_2023;
+
+create view orders_2023
+as 
+select id,total_amount, trans_date
+from orders
+where trans_date between Date_format('2023-01-01', '%Y-%m-%d') and Date_format('2023-12-31', '%Y-%m-%d') ;
+
+-- PLSQL, PROCEDUES (IF ELSE, FOR LOOP, CURSOR, SQL)
+-- view: Real-Time data (i.e. Actual real-time "orders" table data)
+select *
+from orders_2023;
+

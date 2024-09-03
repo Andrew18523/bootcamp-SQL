@@ -39,17 +39,6 @@ create table departments(
     foreign key (location_id) references locations(location_id)
 );
 
-create table job_history(
-	employee_id int ,
-    start_date date,
-    end_date date,
-    job_id varchar(10),
-    department_id int,
-    primary key(employee_id,start_date),
-    foreign key (job_id) references jobs(job_id),
-    foreign key (department_id) references departments(department_id)
-);
-
 create table employees (
 	employee_id int primary key,
     first_name varchar(20),
@@ -62,10 +51,23 @@ create table employees (
     commission_pct int,
     manager_id int,
     department_id int,
-    foreign key(employee_id) references job_history(employee_id),
     foreign key(job_id) references jobs (job_id),
     foreign key (department_id) references departments(department_id)
 );
+
+create table job_history(
+	employee_id int ,
+    start_date date,
+    end_date date,
+    job_id varchar(10),
+    department_id int,
+    primary key(employee_id,start_date),
+    foreign key (job_id) references jobs(job_id),
+    foreign key (department_id) references departments(department_id),
+    foreign key(employee_id) references employees(employee_id)
+);
+
+
 
 -- 2
 
@@ -89,12 +91,7 @@ insert into jobs values ('ST_CLERK', 'Standard Clerk', 6000,10000);
 insert into jobs values ('SAL_ADJ', 'Salary Adjustment', 13000,16000);
 insert into jobs values ('Bou_cal', 'Bouns Calculation', 3000,4000);
 
-insert into job_history values (101,date_format('2000-01-13','%Y-%m-%d'),date_format('2001-07-24','%Y-%m-%d'),'IT_PRO',2);
-insert into job_history values (102,date_format('2001-09-21','%Y-%m-%d'),date_format('2002-10-27','%Y-%m-%d'),'MK_PRO',1);
-insert into job_history values (103,date_format('2002-10-28','%Y-%m-%d'),date_format('2003-03-15','%Y-%m-%d'),'MK_PRO',1);
-insert into job_history values (104,date_format('2006-02-17','%Y-%m-%d'),date_format('2007-12-19','%Y-%m-%d'),'ST_CLERK',4);
-insert into job_history values (102,date_format('2002-03-24','%Y-%m-%d'),date_format('2003-12-31','%Y-%m-%d'),'MK_PRO',1);
-insert into job_history values (105,date_format('2002-05-23','%Y-%m-%d'),date_format('2003-12-31','%Y-%m-%d'),'Bou_cal',3);
+
 
 insert into employees values (101,'Peter','Chan','peter.chan@gmail.com','9871234',date_format('1991-01-04','%Y-%m-%d'),'IT_PRO',20000,0,null,2);
 insert into employees values (102,'Carman','Wong','carman.wongn@gmail.com','95612367',date_format('1993-02-04','%Y-%m-%d'),'MK_PRO',15000,15,null,1);
@@ -102,6 +99,12 @@ insert into employees values (103,'John','Lam','john.lam@gmail.com','90845938',d
 insert into employees values (104,'Ming','Sze','mong.sze@gmail.com','65478321',date_format('1987-12-23','%Y-%m-%d'),'ST_CLERK',16000,0,null,4);
 insert into employees values (105,'Vivian','Chan','vivian.chan@gmail.com','68970345',date_format('1993-04-04','%Y-%m-%d'),'Bou_cal',23000,0,null,3);
 
+insert into job_history values (101,date_format('2000-01-13','%Y-%m-%d'),date_format('2001-07-24','%Y-%m-%d'),'IT_PRO',2);
+insert into job_history values (102,date_format('2001-09-21','%Y-%m-%d'),date_format('2002-10-27','%Y-%m-%d'),'MK_PRO',1);
+insert into job_history values (103,date_format('2002-10-28','%Y-%m-%d'),date_format('2003-03-15','%Y-%m-%d'),'MK_PRO',1);
+insert into job_history values (104,date_format('2006-02-17','%Y-%m-%d'),date_format('2007-12-19','%Y-%m-%d'),'ST_CLERK',4);
+insert into job_history values (102,date_format('2002-03-24','%Y-%m-%d'),date_format('2003-12-31','%Y-%m-%d'),'MK_PRO',1);
+insert into job_history values (105,date_format('2002-05-23','%Y-%m-%d'),date_format('2003-12-31','%Y-%m-%d'),'Bou_cal',3);
 -- 3
 
 select l.location_id, l.street_address, l.state_province, c.country_name
